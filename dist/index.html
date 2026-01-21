@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phong Thủy Nhà Ở 3D</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/phong-thuy-3d/assets/index-BiMSH239.js"></script>
+  <link rel="stylesheet" crossorigin href="/phong-thuy-3d/assets/index-DMWIH_-x.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">☯</span>
+        <h1>Phong Thủy Nhà Ở 3D</h1>
+      </div>
+      <div class="header-actions">
+        <button id="btn-export" class="btn btn-gold">
+          <span>📄</span> Xuất Báo Cáo
+        </button>
+        <button id="btn-reset" class="btn btn-outline">
+          <span>🔄</span> Làm Mới
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Left Panel - Floor Plan Editor -->
+      <aside class="panel panel-left">
+        <div class="panel-header">
+          <h2>📐 Vẽ Sơ Đồ Nhà</h2>
+        </div>
+        <div class="panel-content">
+          <!-- Direction Selector -->
+          <div class="control-group">
+            <label>Hướng Cửa Chính:</label>
+            <div class="direction-selector">
+              <button data-direction="N" class="dir-btn">Bắc</button>
+              <button data-direction="NE" class="dir-btn">ĐB</button>
+              <button data-direction="E" class="dir-btn">Đông</button>
+              <button data-direction="SE" class="dir-btn">ĐN</button>
+              <button data-direction="S" class="dir-btn">Nam</button>
+              <button data-direction="SW" class="dir-btn">TN</button>
+              <button data-direction="W" class="dir-btn">Tây</button>
+              <button data-direction="NW" class="dir-btn">TB</button>
+            </div>
+          </div>
+
+          <!-- Room Tools -->
+          <div class="control-group">
+            <label>Chọn Loại Phòng:</label>
+            <div class="room-tools">
+              <button data-room="door" class="room-btn active" title="Cửa Chính">
+                <span class="room-icon">🚪</span>
+                <span class="room-label">Cửa Chính</span>
+              </button>
+              <button data-room="living" class="room-btn" title="Phòng Khách">
+                <span class="room-icon">🛋️</span>
+                <span class="room-label">Phòng Khách</span>
+              </button>
+              <button data-room="bedroom" class="room-btn" title="Phòng Ngủ">
+                <span class="room-icon">🛏️</span>
+                <span class="room-label">Phòng Ngủ</span>
+              </button>
+              <button data-room="kitchen" class="room-btn" title="Bếp">
+                <span class="room-icon">🍳</span>
+                <span class="room-label">Bếp</span>
+              </button>
+              <button data-room="bathroom" class="room-btn" title="Nhà Vệ Sinh">
+                <span class="room-icon">🚿</span>
+                <span class="room-label">Nhà Vệ Sinh</span>
+              </button>
+              <button data-room="altar" class="room-btn" title="Ban Thờ">
+                <span class="room-icon">🙏</span>
+                <span class="room-label">Ban Thờ</span>
+              </button>
+              <button data-room="eraser" class="room-btn" title="Hoàn tác bước trước">
+                <span class="room-icon">↩️</span>
+                <span class="room-label">Hoàn Tác</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Grid Editor -->
+          <div class="control-group">
+            <label>Sơ Đồ Mặt Bằng:</label>
+            <div id="floor-plan-grid" class="floor-plan-grid"></div>
+            <p class="hint">Click và kéo để vẽ phòng</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center - 3D View -->
+      <section class="view-3d-container">
+        <div id="three-container" class="three-container"></div>
+        <!-- Compass -->
+        <div id="compass-container" class="compass-container"></div>
+        <!-- View Controls -->
+        <div class="view-controls">
+          <button id="btn-top-view" class="view-btn" title="Nhìn từ trên">⬆️</button>
+          <button id="btn-perspective" class="view-btn active" title="Nhìn góc">🎥</button>
+          <button id="btn-zoom-in" class="view-btn" title="Phóng to">➕</button>
+          <button id="btn-zoom-out" class="view-btn" title="Thu nhỏ">➖</button>
+        </div>
+      </section>
+
+      <!-- Right Panel - Feng Shui Analysis -->
+      <aside class="panel panel-right">
+        <div class="panel-header">
+          <h2>☯ Phân Tích Phong Thủy</h2>
+        </div>
+        <div class="panel-content">
+          <!-- Birth Year Input -->
+          <div class="control-group">
+            <label for="birth-year">Năm Sinh Gia Chủ:</label>
+            <div class="input-group">
+              <input type="number" id="birth-year" min="1900" max="2100" placeholder="VD: 1990">
+              <select id="gender">
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+              </select>
+            </div>
+            <button id="btn-calculate" class="btn btn-primary">Tính Cung Mệnh</button>
+          </div>
+
+          <!-- Destiny Info -->
+          <div id="destiny-info" class="destiny-info hidden">
+            <div class="destiny-card">
+              <div class="destiny-symbol" id="destiny-symbol">☰</div>
+              <div class="destiny-details">
+                <h3 id="destiny-name">Cung Càn</h3>
+                <p id="destiny-element">Mệnh Kim</p>
+              </div>
+            </div>
+
+            <!-- Good/Bad Directions -->
+            <div class="directions-grid">
+              <div class="direction-section good">
+                <h4>✅ Hướng Tốt</h4>
+                <ul id="good-directions"></ul>
+              </div>
+              <div class="direction-section bad">
+                <h4>❌ Hướng Xấu</h4>
+                <ul id="bad-directions"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis Results -->
+          <div class="control-group">
+            <label>Phân Tích Chi Tiết:</label>
+            <div id="analysis-results" class="analysis-results">
+              <div class="analysis-item pending">
+                <span class="analysis-icon">⏳</span>
+                <span>Vẽ sơ đồ và nhập năm sinh để phân tích</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score -->
+          <div class="score-container">
+            <div class="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle class="score-bg" cx="50" cy="50" r="45"/>
+                <circle id="score-progress" class="score-progress" cx="50" cy="50" r="45"/>
+              </svg>
+              <div class="score-value">
+                <span id="score-number">--</span>
+                <span class="score-label">điểm</span>
+              </div>
+            </div>
+            <p class="score-text" id="score-text">Chưa có dữ liệu</p>
+          </div>
+
+          <!-- Suggestions -->
+          <div class="control-group">
+            <label>💡 Gợi Ý Cải Thiện:</label>
+            <div id="suggestions" class="suggestions">
+              <p class="placeholder">Hoàn thành phân tích để nhận gợi ý</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Export Modal -->
+  <div id="export-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📄 Báo Cáo Phong Thủy</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="report-content">
+        <!-- Report content will be generated here -->
+      </div>
+      <div class="modal-footer">
+        <button id="btn-print" class="btn btn-primary">🖨️ In Báo Cáo</button>
+        <button id="btn-close-modal" class="btn btn-outline">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
