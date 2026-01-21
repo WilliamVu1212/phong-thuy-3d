@@ -835,36 +835,136 @@ select:focus {
 @media (max-width: 992px) {
   .main-content {
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: auto auto auto;
+    overflow-y: auto;
   }
 
   .panel-left,
   .panel-right {
     border: none;
+    max-height: none;
+  }
+
+  .panel-content {
+    max-height: none;
+    overflow: visible;
   }
 
   .view-3d-container {
-    min-height: 400px;
+    min-height: 350px;
+    order: -1; /* Đưa 3D view lên trên cùng */
   }
 
   .compass-container {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+  }
+
+  .view-controls {
+    bottom: var(--spacing-sm);
   }
 }
 
 @media (max-width: 576px) {
+  #app {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
   .header {
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .panel {
+    max-height: none;
+  }
+
+  .panel-content {
+    padding: var(--spacing-sm);
   }
 
   .room-tools {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+
+  .room-btn {
+    padding: var(--spacing-xs);
+  }
+
+  .room-icon {
+    font-size: 1.2rem;
+  }
+
+  .room-label {
+    font-size: 0.6rem;
+  }
+
+  .floor-plan-grid {
+    max-width: 100%;
+  }
+
+  .grid-cell {
+    font-size: 0.6rem;
+    min-height: 28px;
+  }
+
+  .direction-selector {
+    max-width: 160px;
+  }
+
+  .dir-btn {
+    padding: 6px;
+    font-size: 0.7rem;
   }
 
   .directions-grid {
     grid-template-columns: 1fr;
+  }
+
+  .view-3d-container {
+    min-height: 280px;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  #score-number {
+    font-size: 1.5rem;
   }
 }
 

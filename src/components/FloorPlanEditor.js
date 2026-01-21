@@ -40,6 +40,13 @@ export class FloorPlanEditor {
   createGrid() {
     this.container.innerHTML = '';
 
+    // Ngăn scroll khi touch trên grid (mobile)
+    this.container.addEventListener('touchmove', (e) => {
+      if (this.isDrawing) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
     for (let row = 0; row < this.gridSize; row++) {
       for (let col = 0; col < this.gridSize; col++) {
         const cell = document.createElement('div');
@@ -47,27 +54,17 @@ export class FloorPlanEditor {
         cell.dataset.row = row;
         cell.dataset.col = col;
 
-        // Thêm event listeners cho mỗi ô
+        // Mouse events (desktop)
         cell.addEventListener('mousedown', (e) => this.handleCellMouseDown(e, row, col));
         cell.addEventListener('mouseenter', (e) => this.handleCellMouseEnter(e, row, col));
         cell.addEventListener('mouseup', () => this.handleMouseUp());
 
-        // Touch support
+        // Touch events (mobile) - chỉ dùng touchstart để tap từng ô
         cell.addEventListener('touchstart', (e) => {
-          e.preventDefault();
-          this.handleCellMouseDown(e, row, col);
-        });
-        cell.addEventListener('touchmove', (e) => {
-          e.preventDefault();
-          const touch = e.touches[0];
-          const element = document.elementFromPoint(touch.clientX, touch.clientY);
-          if (element && element.classList.contains('grid-cell')) {
-            const r = parseInt(element.dataset.row);
-            const c = parseInt(element.dataset.col);
-            this.handleCellMouseEnter(e, r, c);
-          }
-        });
-        cell.addEventListener('touchend', () => this.handleMouseUp());
+          e.stopPropagation();
+          this.saveToHistory();
+          this.paintCell(row, col);
+        }, { passive: true });
 
         this.container.appendChild(cell);
       }
@@ -75,6 +72,7 @@ export class FloorPlanEditor {
 
     // Global mouse up listener
     document.addEventListener('mouseup', () => this.handleMouseUp());
+    document.addEventListener('touchend', () => this.handleMouseUp());
   }
 
   handleCellMouseDown(e, row, col) {
