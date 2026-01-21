@@ -97,12 +97,20 @@ class PhongThuyApp {
   onAnalysisComplete(data) {
     this.cungMenh = data.cungMenh;
     this.huongInfo = data.huongInfo;
+    this.score = data.score || 0;
 
     // Update compass with good/bad directions
     if (this.huongInfo) {
       this.compass3D.setGoodBadDirections(
         this.huongInfo.tot,
         this.huongInfo.xau
+      );
+
+      // Update particles with feng shui directions and score
+      this.house3D.updateParticles(
+        this.huongInfo.tot,
+        this.huongInfo.xau,
+        this.score
       );
     }
   }
@@ -111,6 +119,21 @@ class PhongThuyApp {
     const resetBtn = document.getElementById('btn-reset');
     if (resetBtn) {
       resetBtn.addEventListener('click', () => this.reset());
+    }
+
+    // Setup particles toggle button
+    const particlesBtn = document.getElementById('btn-toggle-particles');
+    if (particlesBtn) {
+      particlesBtn.addEventListener('click', () => this.toggleParticles());
+    }
+  }
+
+  toggleParticles() {
+    const enabled = this.house3D.toggleParticles();
+    const btn = document.getElementById('btn-toggle-particles');
+    if (btn) {
+      btn.classList.toggle('active', enabled);
+      btn.title = enabled ? 'Tắt hiệu ứng khí' : 'Bật hiệu ứng khí';
     }
   }
 
@@ -136,6 +159,9 @@ class PhongThuyApp {
       Array(10).fill(null).map(() => Array(10).fill(null)),
       null
     );
+
+    // Reset particles
+    this.house3D.updateParticles([], [], 0);
 
     console.log('🔄 Đã làm mới ứng dụng');
   }

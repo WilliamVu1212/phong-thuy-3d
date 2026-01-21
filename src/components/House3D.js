@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { ROOM_TYPES } from '../utils/fengshui-rules.js';
 import { HUONG } from '../utils/bagua-calculator.js';
+import { FengShuiParticles } from './FengShuiParticles.js';
 
 export class House3D {
   constructor(containerId, options = {}) {
@@ -31,6 +32,10 @@ export class House3D {
 
     // Animation
     this.animationId = null;
+    this.clock = new THREE.Clock();
+
+    // Feng Shui Particles
+    this.particles = null;
 
     this.init();
   }
@@ -43,6 +48,7 @@ export class House3D {
     this.setupLighting();
     this.createFloor();
     this.setupViewButtons();
+    this.setupParticles();
     this.animate();
 
     // Handle resize
@@ -164,6 +170,15 @@ export class House3D {
     }
   }
 
+  setupParticles() {
+    this.particles = new FengShuiParticles({
+      particleCount: 500,
+      gridSize: this.gridSize
+    });
+    const particleGroup = this.particles.init();
+    this.scene.add(particleGroup);
+  }
+
   updateHouse(floorPlan, direction) {
     this.floorPlan = floorPlan;
     this.direction = direction;
@@ -200,6 +215,40 @@ export class House3D {
     }
 
     this.scene.add(this.houseGroup);
+
+    // Update particles with floor plan
+    if (this.particles) {
+      this.particles.updateFloorPlan(floorPlan);
+    }
+  }
+
+  /**
+   * Cập nhật particles với thông tin hướng tốt/xấu từ analysis
+   */
+  updateParticles(goodDirs, badDirs, score = 0) {
+    if (this.particles) {
+      this.particles.updateDirections(goodDirs, badDirs, this.direction);
+      this.particles.updateScore(score);
+    }
+  }
+
+  /**
+   * Bật/tắt hiệu ứng particles
+   */
+  toggleParticles() {
+    if (this.particles) {
+      return this.particles.toggle();
+    }
+    return false;
+  }
+
+  /**
+   * Set particles enabled/disabled
+   */
+  setParticlesEnabled(enabled) {
+    if (this.particles) {
+      this.particles.setEnabled(enabled);
+    }
   }
 
   createRoom(row, col, roomType, offset) {
@@ -478,8 +527,15 @@ export class House3D {
   animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
 
+    const deltaTime = this.clock.getDelta();
+
     // Update controls
     this.controls.update();
+
+    // Update particles
+    if (this.particles) {
+      this.particles.update(deltaTime);
+    }
 
     // Render
     this.renderer.render(this.scene, this.camera);
@@ -512,6 +568,11 @@ export class House3D {
   dispose() {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
+    }
+
+    // Dispose particles
+    if (this.particles) {
+      this.particles.dispose();
     }
 
     // Dispose all meshes

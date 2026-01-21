@@ -460,6 +460,20 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--color-gold);
 }
 
+/* Particles toggle button */
+#btn-toggle-particles.active {
+  animation: particles-glow 2s ease-in-out infinite;
+}
+
+@keyframes particles-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--color-gold), 0 0 10px var(--color-gold);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--color-gold), 0 0 20px var(--color-gold), 0 0 30px var(--color-gold-light);
+  }
+}
+
 /* =========================================
    COMPASS CONTAINER
    ========================================= */

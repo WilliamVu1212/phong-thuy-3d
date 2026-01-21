@@ -121,9 +121,15 @@ export class FengShuiAnalyzer {
     this.runAnalysis();
 
     // Notify
+    this.notifyAnalysisComplete();
+  }
+
+  notifyAnalysisComplete() {
+    const score = this.analysis?.score || 0;
     this.onAnalysisComplete({
       cungMenh: this.cungMenh,
-      huongInfo: this.huongInfo
+      huongInfo: this.huongInfo,
+      score: score
     });
   }
 
@@ -180,6 +186,11 @@ export class FengShuiAnalyzer {
     this.displayAnalysisResults();
     this.displayScore();
     this.displaySuggestions();
+
+    // Notify khi có thay đổi analysis
+    if (this.cungMenh) {
+      this.notifyAnalysisComplete();
+    }
   }
 
   displayAnalysisResults() {
