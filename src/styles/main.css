@@ -990,10 +990,11 @@ select:focus {
   }
 
   .compass-container {
-    width: 60px;
-    height: 60px;
-    top: var(--spacing-xs);
-    right: var(--spacing-xs);
+    width: 50px;
+    height: 50px;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
   }
 
   .view-controls {
