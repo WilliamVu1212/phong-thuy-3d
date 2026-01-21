@@ -975,8 +975,36 @@ select:focus {
     grid-template-columns: 1fr;
   }
 
+  /* 3D View hiển thị trên mobile */
   .view-3d-container {
-    min-height: 280px;
+    display: block !important;
+    min-height: 300px;
+    height: 300px;
+    order: -1; /* Đưa lên trên cùng */
+    border-bottom: 2px solid var(--color-gold-dark);
+  }
+
+  .three-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .compass-container {
+    width: 60px;
+    height: 60px;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+  }
+
+  .view-controls {
+    bottom: var(--spacing-xs);
+    padding: var(--spacing-xs);
+  }
+
+  .view-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
   }
 
   .input-group {
