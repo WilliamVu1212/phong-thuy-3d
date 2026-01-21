@@ -9,7 +9,9 @@ import { HUONG } from '../utils/bagua-calculator.js';
 export class Compass3D {
   constructor(containerId, options = {}) {
     this.container = document.getElementById(containerId);
-    this.size = options.size || 150;
+    // Lấy kích thước từ container thực tế
+    const containerSize = Math.min(this.container.offsetWidth, this.container.offsetHeight);
+    this.size = containerSize > 0 ? containerSize : (options.size || 150);
 
     // Three.js components
     this.scene = null;
@@ -28,6 +30,18 @@ export class Compass3D {
     this.animationId = null;
 
     this.init();
+
+    // Listen for resize
+    this.handleResize = this.handleResize.bind(this);
+    window.addEventListener('resize', this.handleResize);
+  }
+
+  handleResize() {
+    const containerSize = Math.min(this.container.offsetWidth, this.container.offsetHeight);
+    if (containerSize > 0 && containerSize !== this.size) {
+      this.size = containerSize;
+      this.renderer.setSize(this.size, this.size);
+    }
   }
 
   init() {
@@ -367,6 +381,8 @@ export class Compass3D {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
+
+    window.removeEventListener('resize', this.handleResize);
 
     // Dispose all meshes
     this.scene.traverse((child) => {
