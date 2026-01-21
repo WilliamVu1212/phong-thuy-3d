@@ -371,6 +371,11 @@ h1, h2, h3, h4, h5, h6 {
   padding: 2px;
   aspect-ratio: 1;
   user-select: none;
+  min-height: 200px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  touch-action: manipulation;
 }
 
 .grid-cell {
@@ -378,11 +383,14 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-bg-light);
   border-radius: 2px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
+  min-width: 20px;
+  min-height: 20px;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .grid-cell:hover {
@@ -868,6 +876,11 @@ select:focus {
 }
 
 @media (max-width: 576px) {
+  html, body {
+    height: auto;
+    overflow: auto;
+  }
+
   #app {
     height: auto;
     min-height: 100vh;
@@ -896,14 +909,23 @@ select:focus {
     display: flex;
     flex-direction: column;
     height: auto;
+    overflow: visible;
   }
 
   .panel {
     max-height: none;
+    overflow: visible;
   }
 
   .panel-content {
     padding: var(--spacing-sm);
+    overflow: visible;
+  }
+
+  /* Panel right (Analysis) phải hiển thị trên mobile */
+  .panel-right {
+    display: block !important;
+    border-top: 2px solid var(--color-gold-dark);
   }
 
   .room-tools {
@@ -925,11 +947,19 @@ select:focus {
 
   .floor-plan-grid {
     max-width: 100%;
+    min-height: 280px;
+    width: calc(100vw - 32px);
+    margin: var(--spacing-sm) auto;
   }
 
   .grid-cell {
     font-size: 0.6rem;
-    min-height: 28px;
+    min-height: 24px;
+    min-width: 24px;
+  }
+
+  .grid-cell:hover {
+    transform: none;
   }
 
   .direction-selector {
@@ -965,6 +995,13 @@ select:focus {
 
   #score-number {
     font-size: 1.5rem;
+  }
+
+  /* Đảm bảo các section analysis hiển thị */
+  .analysis-results,
+  .score-container,
+  .suggestions {
+    display: block !important;
   }
 }
 
