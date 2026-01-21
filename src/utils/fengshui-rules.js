@@ -6,13 +6,14 @@
 import { HUONG, layHuongTotXau } from './bagua-calculator.js';
 
 // Định nghĩa các loại phòng
+// unique: true = chỉ được đặt 1 ô duy nhất (ví dụ: cửa chính, ban thờ)
 export const ROOM_TYPES = {
-  door: { name: 'Cửa Chính', icon: '🚪', color: 0xFFD700, weight: 25 },
-  living: { name: 'Phòng Khách', icon: '🛋️', color: 0x4CAF50, weight: 15 },
-  bedroom: { name: 'Phòng Ngủ', icon: '🛏️', color: 0x9C27B0, weight: 20 },
-  kitchen: { name: 'Bếp', icon: '🍳', color: 0xFF5722, weight: 20 },
-  bathroom: { name: 'Nhà Vệ Sinh', icon: '🚿', color: 0x2196F3, weight: 10 },
-  altar: { name: 'Ban Thờ', icon: '🙏', color: 0xE91E63, weight: 10 }
+  door: { name: 'Cửa Chính', icon: '🚪', color: 0xFFD700, weight: 25, unique: true },
+  living: { name: 'Phòng Khách', icon: '🛋️', color: 0x4CAF50, weight: 15, unique: false },
+  bedroom: { name: 'Phòng Ngủ', icon: '🛏️', color: 0x9C27B0, weight: 20, unique: false },
+  kitchen: { name: 'Bếp', icon: '🍳', color: 0xFF5722, weight: 20, unique: false },
+  bathroom: { name: 'Nhà Vệ Sinh', icon: '🚿', color: 0x2196F3, weight: 10, unique: false },
+  altar: { name: 'Ban Thờ', icon: '🙏', color: 0xE91E63, weight: 10, unique: true }
 };
 
 // Các quy tắc phong thủy

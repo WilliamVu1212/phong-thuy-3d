@@ -97,11 +97,46 @@ export class FloorPlanEditor {
     if (this.currentTool === 'eraser') {
       this.floorPlan[row][col] = null;
     } else {
+      const roomType = ROOM_TYPES[this.currentTool];
+
+      // Nếu là item unique (chỉ được đặt 1 lần)
+      if (roomType && roomType.unique) {
+        // Kiểm tra xem đã có item này trên bản đồ chưa
+        const existingCell = this.findExistingCell(this.currentTool);
+
+        if (existingCell) {
+          // Nếu click vào cùng ô đã có item -> xóa nó
+          if (existingCell.row === row && existingCell.col === col) {
+            this.floorPlan[row][col] = null;
+            this.updateCellDisplay(row, col);
+            this.onFloorPlanChange(this.floorPlan);
+            return;
+          }
+          // Nếu click vào ô khác -> di chuyển item từ ô cũ sang ô mới
+          const oldRow = existingCell.row;
+          const oldCol = existingCell.col;
+          this.floorPlan[oldRow][oldCol] = null;
+          this.updateCellDisplay(oldRow, oldCol);
+        }
+      }
+
       this.floorPlan[row][col] = this.currentTool;
     }
 
     this.updateCellDisplay(row, col);
     this.onFloorPlanChange(this.floorPlan);
+  }
+
+  // Tìm ô đã có item type nào đó (dùng cho unique items)
+  findExistingCell(roomType) {
+    for (let r = 0; r < this.gridSize; r++) {
+      for (let c = 0; c < this.gridSize; c++) {
+        if (this.floorPlan[r][c] === roomType) {
+          return { row: r, col: c };
+        }
+      }
+    }
+    return null;
   }
 
   updateCellDisplay(row, col) {
