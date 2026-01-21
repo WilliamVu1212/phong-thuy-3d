@@ -982,6 +982,8 @@ select:focus {
     height: 300px;
     order: -1; /* Đưa lên trên cùng */
     border-bottom: 2px solid var(--color-gold-dark);
+    overflow: hidden;
+    position: relative;
   }
 
   .three-container {
@@ -990,11 +992,13 @@ select:focus {
   }
 
   .compass-container {
-    width: 50px;
-    height: 50px;
-    top: 8px;
-    right: 8px;
+    position: absolute !important;
+    width: 50px !important;
+    height: 50px !important;
+    top: 8px !important;
+    right: 8px !important;
     z-index: 10;
+    overflow: hidden;
   }
 
   .view-controls {
